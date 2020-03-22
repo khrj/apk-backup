@@ -1,6 +1,6 @@
 echo THE APKS ARE STORED IN
 scriptdir=$(cd ./$(dirname $0)/; pwd)
-apkdir=$(cd $scriptdir/../Apks/; pwd) # APK DIR, Absolute
+apkdir=$(cd $scriptdir/../Apks/; pwd)/ # APK DIR, Absolute
 echo $apkdir
 
 adb push $apkdir/.gitignore /sdcard/ExtractedApks/
