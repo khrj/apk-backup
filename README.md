@@ -1,5 +1,5 @@
 # ApkBackup
-Lets you backup Apks from your phone and restore to them later
+Lets you backup Apks from your phone and restore them later
 
 # Usage
 ## Backup
