@@ -10,4 +10,4 @@ Then run `Tools/extract-all.sh`
 Run `Tools/install-all.sh`
 
 # Credits
-(adb-sync)[https://github.com/google/adb-sync] script by Google under Apache 2.0 License
+[`adb-sync`](https://github.com/google/adb-sync) script by Google under Apache 2.0 License
