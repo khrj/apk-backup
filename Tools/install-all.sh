@@ -3,7 +3,7 @@ scriptdir=./$(dirname $0)/
 apkdir=$(cd $scriptdir/../Apks/; pwd) # APK DIR, Absolute
 echo $apkdir
 
-find $apkdir -name "* *" -type f | rename 's/ /_/g' # Replace spaces with _s
+find $apkdir -name "* *" -type f | rename 's/ /_/g' # Replace spaces with _
 for out in $(ls $apkdir)
 do
     adb install $apkdir/$out
