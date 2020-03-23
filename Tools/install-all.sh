@@ -1,10 +1,18 @@
+scriptdir=$(cd ./$(dirname $0)/; pwd)
+apkdir=$(cd $scriptdir/../Apks/; pwd)/ # APK DIR, Absolute
 echo THE APKS ARE STORED IN
-scriptdir=./$(dirname $0)/
-apkdir=$(cd $scriptdir/../Apks/; pwd) # APK DIR, Absolute
 echo $apkdir
 
-find $apkdir -name "* *" -type f | rename 's/ /_/g' # Replace spaces with _
-for out in $(ls $apkdir)
+cd $apkdir
+for folder in $(ls)
 do
-    adb install $apkdir/$out
+    echo $folder
+    cd $folder
+    if [[ $(ls -1 | wc -l | awk '{print $1}') != '1' ]]
+    then
+        adb install-multiple $(ls | tr "\n" " ")
+    else
+        adb install base.apk
+    fi
+    cd ..
 done
