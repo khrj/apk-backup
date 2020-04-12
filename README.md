@@ -1,5 +1,6 @@
 # ApkBackup
 Lets you backup Apks from your phone and restore them later
+
 Note: Does not backup app data
 
 # Usage
@@ -7,6 +8,7 @@ Note: Does not backup app data
 ## Backup
 
 Note: Apps must be on internal storage and not on sdcard
+
 Run `Tools/extract-all.sh`
 
 ### Features
@@ -19,4 +21,5 @@ Run `Tools/install-all.sh`
 
 ## Uninstall
 **CAUTION**: Uninstalls all installed user apps from android phone
+
 Run `Tools/uninstall-all.sh`
