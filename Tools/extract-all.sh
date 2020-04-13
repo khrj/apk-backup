@@ -3,10 +3,10 @@
 set -e
 
 # Color coding
-GREEN='\033[0;32m'
-ORANGE='\033[0;33m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+GREEN="\033[0;32m"
+ORANGE="\033[0;33m"
+YELLOW="\033[1;33m"
+NC="\033[0m" # No Color
 
 # Start of script
 scriptdir=$(cd ./"$(dirname "${0}")"/; pwd)
@@ -19,8 +19,8 @@ cd "${apkdir}"
 for package in $(adb shell "cmd package list packages -3" | cut -d ":" -f 2)
 do
     apks=$(adb shell "cmd package path ${package}" | cut -d ":" -f 2)
-    version=$(adb shell dumpsys package $package | grep versionName | tr -d '[:space:]')
     printf "\n"
+    version=$(adb shell dumpsys package $package | grep versionName | tr -d "[:space:]")
     if [[ ! -d "${apkdir}"/${package} ]] # If the apk hasn't been previously backed up
     then
         printf "%s has not been backed up before\n" "${package}"
