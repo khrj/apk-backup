@@ -12,21 +12,25 @@ NC="\033[0m" # No Color
 scriptdir=$(cd ./"$(dirname "${0}")"/; pwd)
 apkdir=$(cd "${scriptdir}"/../Apks/; pwd)/ # APK DIR, Absolute
 
+declare -a INSTALLED_PACKAGES=()
+
+# shellcheck disable=SC2059
 printf "${YELLOW}THE APKS ARE STORED IN\n"
 printf "%s\n${NC}" "${apkdir}"
 
 cd "${apkdir}"
 for package in $(adb shell "cmd package list packages -3" | cut -d ":" -f 2)
 do
-    apks=$(adb shell "cmd package path ${package}" | cut -d ":" -f 2)
+    apks=$(adb shell cmd package path "${package}" | cut -d ":" -f 2)
+    version=$(adb shell dumpsys package "${package}" | grep versionName | tr -d "[:space:]")
+    INSTALLED_PACKAGES+=("${package}")
     printf "\n"
-    version=$(adb shell dumpsys package $package | grep versionName | tr -d "[:space:]")
     if [[ ! -d "${apkdir}"/${package} ]] # If the apk hasn't been previously backed up
     then
         printf "%s has not been backed up before\n" "${package}"
         mkdir "${package}"
         cd "${apkdir}"/"${package}"
-        echo ${version} > ./version
+        echo "${version}" > ./version
         for apk in ${apks}
         do
             adb pull "${apk}"
@@ -43,7 +47,7 @@ do
             mkdir "${package}"
             cd "${package}"
             
-            echo ${version} > ./version
+            echo "${version}" > ./version
             for apk in ${apks}
             do
                 adb pull "${apk}"
@@ -54,3 +58,22 @@ do
         cd "${apkdir}"
     fi
 done
+
+# shellcheck disable=SC2059
+printf "\n${YELLOW}Deleting APKs that were uninstalled since last backup\n${NC}"
+
+declare -a REMOVED_PACKAGES=()
+
+for backup in *
+do
+    [[ -e "$backup" ]] || break
+    if [[ ! "${INSTALLED_PACKAGES[*]}" =~ "$(echo "${backup}" | tr -d "[:space:]")" ]]; then
+        REMOVED_PACKAGES+=("${backup}")
+        rm -r "${apkdir:?}"/"${backup}"
+    fi
+done
+
+printf "%s\n" "${REMOVED_PACKAGES[@]}"
+# shellcheck disable=SC2059
+printf "\n${YELLOW}SUCCESS!${NC}\n"
+
