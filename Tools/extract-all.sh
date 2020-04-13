@@ -19,32 +19,38 @@ cd "${apkdir}"
 for package in $(adb shell "cmd package list packages -3" | cut -d ":" -f 2)
 do
     apks=$(adb shell "cmd package path ${package}" | cut -d ":" -f 2)
+    version=$(adb shell dumpsys package $package | grep versionName | tr -d '[:space:]')
     printf "\n"
     if [[ ! -d "${apkdir}"/${package} ]] # If the apk hasn't been previously backed up
     then
         printf "%s has not been backed up before\n" "${package}"
         mkdir "${package}"
         cd "${apkdir}"/"${package}"
+        echo ${version} > ./version
         for apk in ${apks}
         do
             adb pull "${apk}"
         done
         cd "${apkdir}"
     else
-        printf "%s has been previously backed up\n" "${package}"
         cd "${apkdir}"/"${package}"
-        for apk in ${apks}
-        do
-            apklocal=$(echo "${apk}" | rev | cut -d '/' -f 1 | rev)
-            if [[ $(adb shell sha256sum "${apk}" | cut -d ' ' -f 1) != $(sha256sum "${apklocal}" | cut -d ' ' -f 1) ]]
-            then
-                printf "${ORANGE}%s has been updated since last backup\n${NC}, backing up again" "${apk}"
-                rm "${apkdir}"/"${package}"/"${apklocal}"
+        if [[ ${version} != $(cat ./version) ]]
+        then
+            printf "${ORANGE}%s has been updated since last backup, backing up again\n${NC}" "${package}"
+            
+            cd ..
+            rm -r ./"${package}"
+            mkdir "${package}"
+            cd "${package}"
+            
+            echo ${version} > ./version
+            for apk in ${apks}
+            do
                 adb pull "${apk}"
-            else
-                printf "${GREEN}%s has not changed since last backup\n${NC}" "${apk}"
-            fi
-        done
+            done
+        else
+            printf "${GREEN}%s has not changed since last backup\n${NC}" "${package}"
+        fi
         cd "${apkdir}"
     fi
 done

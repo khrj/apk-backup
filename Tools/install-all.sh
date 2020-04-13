@@ -10,7 +10,7 @@ do
     cd $folder
     if [[ $(ls -1 | wc -l | awk '{print $1}') != '1' ]]
     then
-        adb install-multiple $(ls | tr "\n" " ")
+        adb install-multiple ${$(ls | tr "\n" " ")//version/}
     else
         adb install base.apk
     fi
