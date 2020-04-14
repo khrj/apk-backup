@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
@@ -13,9 +13,9 @@ do
     [[ -e "${folder}" ]] || break
     echo "$folder"
     cd "$folder"
-    if [[ $(find . | wc -l | awk '{print $1}') != '1' ]]
+    if [[ $(echo *(.) | wc -l | awk '{print $1}') != '1' ]]
     then
-        adb install-multiple ${$(find . | tr "\n" " ")//version/}
+        adb install-multiple ${$(echo *(.) | tr "\n" " ")//version/}
     else
         adb install base.apk
     fi
