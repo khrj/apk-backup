@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-set -e
-
 scriptdir=$(cd ./"$(dirname "$0")"/; pwd)
 apkdir=$(cd "$scriptdir"/../Apks/; pwd)/ # APK DIR, Absolute
 echo THE APKS ARE STORED IN
