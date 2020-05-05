@@ -27,7 +27,7 @@ do
     [[ -e "${folder}" ]] || break
     echo "$folder"
     cd "$folder"
-    if [[ $(echo *(.) | wc -l | awk '{print $1}') != '1' ]]
+    if [[ $(ls | wc -l | awk '{print $1}') != '1' ]]
     then
         adb install-multiple ${$(echo *(.) | tr "\n" " ")//version/}
     else
