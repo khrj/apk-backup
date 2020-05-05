@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2020 Khushraj Rathod
 #
 # This file is part of ApkBackup.
@@ -14,8 +15,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with ApkBackup.  If not, see <https://www.gnu.org/licenses/>.
-
-#!/bin/bash
 
 set -e
 
